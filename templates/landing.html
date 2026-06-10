@@ -2,66 +2,196 @@
 
 {% block title %}Spendly — Track Every Rupee{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+{% endblock %}
+
 {% block content %}
 
 <section class="hero">
-    <div class="hero-inner">
-        <div class="hero-badge">Personal Finance Tracker</div>
-        <h1 class="hero-title">
-            Know where your<br>
-            <em>money goes</em>
-        </h1>
-        <p class="hero-subtitle">
-            Log expenses, understand your spending patterns,
-            and take control of your financial life —
-            one transaction at a time.
-        </p>
-        <div class="hero-actions">
-            <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
-            <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
+    <div class="hero-decor hero-decor-circle" aria-hidden="true"></div>
+    <div class="hero-decor hero-decor-dots" aria-hidden="true"></div>
+
+    <div class="hero-grid">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M12 2c.4 4.5 3.5 7.6 8 8-4.5.4-7.6 3.5-8 8-.4-4.5-3.5-7.6-8-8 4.5-.4 7.6-3.5 8-8z" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="hero-badge-text">Personal Finance Tracker</span>
+            </div>
+
+            <h1 class="hero-title">
+                Track today.<br>
+                Plan tomorrow.<br>
+                <span class="hero-title-accent">Live freely.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Track expenses, understand your spending patterns,
+                and take control of your financial life.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('register') }}" class="btn-hero-primary">
+                    Start tracking free
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#features" class="btn-hero-link">
+                    See how it works
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="hero-social">
+                <div class="hero-avatars" aria-hidden="true">
+                    <span class="hero-avatar hero-avatar-1">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z" fill="currentColor"/></svg>
+                    </span>
+                    <span class="hero-avatar hero-avatar-2">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z" fill="currentColor"/></svg>
+                    </span>
+                    <span class="hero-avatar hero-avatar-3">
+                        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z" fill="currentColor"/></svg>
+                    </span>
+                </div>
+                <div class="hero-social-text">
+                    <div class="hero-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                    <span>Join 25,000+ users taking control of their money</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="dash-card">
+                <div class="dash-head">
+                    <button class="dash-month" type="button">
+                        May 2026
+                        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div class="dash-balance">
+                        <span class="dash-balance-label">Total balance</span>
+                        <span class="dash-balance-amt">₹24,650</span>
+                        <span class="dash-balance-chip">
+                            <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            12% vs Apr
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dash-body">
+                    <div class="dash-overview">
+                        <span class="dash-section-label">Spending overview</span>
+                        <div class="dash-donut">
+                            <div class="dash-donut-hole">
+                                <span class="dash-donut-amt">₹24,650</span>
+                                <span class="dash-donut-sub">Total spent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-categories">
+                        <span class="dash-section-label">Top categories</span>
+                        <ul class="dash-cat-list">
+                            <li class="dash-cat">
+                                <span class="dash-cat-icon dash-cat-shopping">
+                                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 8h12l-1 12H7L6 8zm3 0V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                                <span class="dash-cat-name">Shopping</span>
+                                <span class="dash-cat-amt">₹8,450</span>
+                                <span class="dash-cat-pct">34%</span>
+                            </li>
+                            <li class="dash-cat">
+                                <span class="dash-cat-icon dash-cat-food">
+                                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 3v8m3-8v8m-3 0v10m9-18v18m0-18c-1.5 0-2.5 2-2.5 5s1 4 2.5 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                                <span class="dash-cat-name">Food &amp; Dining</span>
+                                <span class="dash-cat-amt">₹5,320</span>
+                                <span class="dash-cat-pct">22%</span>
+                            </li>
+                            <li class="dash-cat">
+                                <span class="dash-cat-icon dash-cat-transport">
+                                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v6h-2v-2H7v2H5v-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="14" r="1" fill="currentColor"/><circle cx="16" cy="14" r="1" fill="currentColor"/></svg>
+                                </span>
+                                <span class="dash-cat-name">Transport</span>
+                                <span class="dash-cat-amt">₹3,250</span>
+                                <span class="dash-cat-pct">13%</span>
+                            </li>
+                            <li class="dash-cat">
+                                <span class="dash-cat-icon dash-cat-health">
+                                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.5 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                                <span class="dash-cat-name">Health</span>
+                                <span class="dash-cat-amt">₹2,150</span>
+                                <span class="dash-cat-pct">9%</span>
+                            </li>
+                            <li class="dash-cat">
+                                <span class="dash-cat-icon dash-cat-others">
+                                    <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg>
+                                </span>
+                                <span class="dash-cat-name">Others</span>
+                                <span class="dash-cat-amt">₹5,480</span>
+                                <span class="dash-cat-pct">22%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('register') }}" class="dash-foot">
+                    <span>View all transactions</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="hero-visual">
-        <div class="mock-card">
-            <div class="mock-card-header">
-                <span class="mock-label">March 2026</span>
-                <span class="mock-total">₹12,450</span>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <span class="hero-stat-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20v-1c0-2.5 2.5-4 6-4s6 1.5 6 4v1H3zm12 0v-1c0-1.4-.5-2.5-1.3-3.3 2.8.2 5.3 1.5 5.3 3.8v.5h-4z" fill="currentColor"/></svg>
+            </span>
+            <div class="hero-stat-text">
+                <span class="hero-stat-num">25K+</span>
+                <span class="hero-stat-label">Active users</span>
             </div>
-            <div class="mock-bars">
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Bills</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar" style="width: 72%"></div>
-                    </div>
-                    <span class="mock-amt">₹4,500</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Food</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-2" style="width: 52%"></div>
-                    </div>
-                    <span class="mock-amt">₹3,200</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Health</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-3" style="width: 33%"></div>
-                    </div>
-                    <span class="mock-amt">₹2,050</span>
-                </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Transport</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-4" style="width: 28%"></div>
-                    </div>
-                    <span class="mock-amt">₹1,800</span>
-                </div>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon hero-stat-icon-red">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div class="hero-stat-text">
+                <span class="hero-stat-num">100%</span>
+                <span class="hero-stat-label">Secure &amp; private</span>
+            </div>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 16l5-5 3 3 6-6m0 0h-4m4 0v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div class="hero-stat-text">
+                <span class="hero-stat-num">4.8/5</span>
+                <span class="hero-stat-label">App store rating</span>
+            </div>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon hero-stat-icon-gold">
+                <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div class="hero-stat-text">
+                <span class="hero-stat-num">1M+</span>
+                <span class="hero-stat-label">Transactions tracked</span>
             </div>
         </div>
     </div>
 </section>
 
-<section class="features">
+<section class="features" id="features">
     <div class="features-inner">
         <div class="feature-card">
             <div class="feature-icon">₹</div>
