@@ -32,6 +32,11 @@ def policy():
     return render_template("privacy.html")
 
 
+@app.route("/working")
+def working():
+    return render_template("working.html")
+
+
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #

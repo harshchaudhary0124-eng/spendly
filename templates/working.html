@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}How it works — Spendly{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">How it works</div>
+        <h1 class="hero-title">
+            From scattered receipts<br>
+            to <em>total clarity</em>
+        </h1>
+        <p class="hero-subtitle">
+            Most people lose track of their money not because they earn too little,
+            but because they never see where it actually goes. Here's the problem,
+            how people try to fix it, and the Spendly way.
+        </p>
+    </div>
+</section>
+
+<section class="features">
+    <div class="features-inner">
+        <div class="feature-card">
+            <div class="feature-icon">✕</div>
+            <h3 class="feature-title">The problem faced</h3>
+            <p class="feature-body">
+                Money slips away in small, forgettable amounts — a coffee here, a
+                subscription there. By month-end, the balance is lower than expected
+                and there's no clear answer to the simple question: "Where did it all go?"
+                Without visibility, budgeting becomes guesswork and saving feels impossible.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">≈</div>
+            <h3 class="feature-title">Current solutions</h3>
+            <p class="feature-body">
+                People reach for messy spreadsheets, paper notebooks, or scanning every
+                bank statement by hand. These work for a week, then break down: they're
+                slow to update, easy to abandon, and they bury you in raw numbers without
+                ever showing the patterns that actually drive your spending.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">◈</div>
+            <h3 class="feature-title">The Spendly way</h3>
+            <p class="feature-body">
+                Spendly makes tracking effortless. Log any expense in seconds, and Spendly
+                instantly sorts it into categories, shows monthly summaries, and reveals
+                exactly where your money goes. Filter by any time period to spot trends —
+                so you stop guessing and start making confident, informed decisions.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner">
+        <h2 class="cta-title">See it for yourself</h2>
+        <p class="cta-body">Start tracking your expenses with Spendly — it's free to begin.</p>
+        <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
+    </div>
+</section>
+{% endblock %}
