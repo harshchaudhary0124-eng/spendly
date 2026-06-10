@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Privacy</div>
+        <h1 class="hero-title">
+            Our <br>
+            <em>Privacy Policy</em>
+        </h1>
+        <p class="hero-subtitle">
+            Your trust is our priority. We are committed to protecting
+            your data and ensuring your financial journey remains private.
+        </p>
+    </div>
+</section>
+
+<section class="features">
+    <div class="features-inner" style="display: block; text-align: left; max-width: 800px; margin: 0 auto;">
+        <div class="feature-card" style="display: block; margin-bottom: 2rem; padding: 2rem; border: 1px solid #eee; border-radius: 12px;">
+            <h3 class="feature-title">1. Data We Collect</h3>
+            <p class="feature-body">To provide our service, we collect information you provide directly, such as your name, email address, and registration details. As you use Spendly, we collect the expense data you input, including amounts, categories, dates, and descriptions. We also collect basic technical information, such as your IP address and browser type, to ensure the security and stability of our application.</p>
+        </div>
+
+        <div class="feature-card" style="display: block; margin-bottom: 2rem; padding: 2rem; border: 1px solid #eee; border-radius: 12px;">
+            <h3 class="feature-title">2. How We Use Your Data</h3>
+            <p class="feature-body">We use your information to provide and maintain our service, manage your account, and personalize your experience. Your expense data is used solely to generate your financial reports and summaries. We do not sell your personal or financial data to third parties for marketing purposes.</p>
+        </div>
+
+        <div class="feature-card" style="display: block; margin-bottom: 2rem; padding: 2rem; border: 1px solid #eee; border-radius: 12px;">
+            <h3 class="feature-title">3. Data Storage</h3>
+            <p class="feature-body">Your data is stored securely using industry-standard encryption. We implement access controls to ensure that only authorized systems and personnel can access your information. You may request a copy of your data or ask for its deletion at any time via your account settings or by contacting us.</p>
+        </div>
+
+        <div class="feature-card" style="display: block; margin-bottom: 2rem; padding: 2rem; border: 1px solid #eee; border-radius: 12px;">
+            <h3 class="feature-title">4. Third-Party Services</h3>
+            <p class="feature-body">We may use third-party service providers to facilitate our application (e.g., hosting providers or email delivery services). These providers are bound by strict confidentiality agreements and are only permitted to use your data as necessary to perform the services we have contracted them to provide.</p>
+        </div>
+
+        <div class="feature-card" style="display: block; margin-bottom: 2rem; padding: 2rem; border: 1px solid #eee; border-radius: 12px;">
+            <h3 class="feature-title">5. Contact Us</h3>
+            <p class="feature-body">If you have any questions about this Privacy Policy or how your data is handled, please reach out to us at privacy@spendly.app. We aim to respond to all privacy-related inquiries within 48 hours.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner">
+        <h2 class="cta-title">Your Privacy, Your Control</h2>
+        <p class="cta-body">We believe in transparency and ownership of your financial data.</p>
+        <a href="{{ url_for('landing') }}" class="btn-primary">Back to Home</a>
+    </div>
+</section>
+{% endblock %}
