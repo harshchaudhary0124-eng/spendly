@@ -49,6 +49,16 @@ def init_db():
     conn.close()
 
 
+def get_user_by_id(user_id):
+    """Return the users row matching id, or None if no such user exists."""
+    conn = get_db()
+    row = conn.execute(
+        "SELECT * FROM users WHERE id = ?", (user_id,)
+    ).fetchone()
+    conn.close()
+    return row
+
+
 def get_user_by_email(email):
     """Return the users row matching email, or None if no such user exists."""
     conn = get_db()
