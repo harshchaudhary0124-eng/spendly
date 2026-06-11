@@ -1,8 +1,26 @@
-from flask import Flask, render_template
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session,
+    abort,
+)
+from werkzeug.security import generate_password_hash
 
-from database.db import get_db, init_db, seed_db
+from database.db import (
+    get_db,
+    init_db,
+    seed_db,
+    create_user,
+    get_user_by_email,
+)
 
 app = Flask(__name__)
+# Dev-only secret key for session signing. Move to an environment variable
+# before any non-local deployment.
+app.secret_key = "dev-secret-change-me"
 
 # Ensure the database schema exists and demo data is present before serving.
 with app.app_context():
@@ -19,9 +37,35 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "GET":
+        return render_template("register.html")
+
+    name = request.form.get("name")
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    # Treat absent or blank required fields as a malformed request.
+    if not name or not name.strip() or not email or not email.strip() or not password:
+        abort(400)
+
+    name = name.strip()
+    email = email.strip().lower()
+
+    if len(password) < 8:
+        return render_template(
+            "register.html", error="Password must be at least 8 characters."
+        )
+
+    if get_user_by_email(email) is not None:
+        return render_template(
+            "register.html", error="An account with that email already exists."
+        )
+
+    user_id = create_user(name, email, generate_password_hash(password))
+    session["user_id"] = user_id
+    return redirect(url_for("profile"))
 
 
 @app.route("/login")
