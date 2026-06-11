@@ -7,7 +7,7 @@ from flask import (
     session,
     abort,
 )
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db import (
     get_db,
@@ -15,6 +15,7 @@ from database.db import (
     seed_db,
     create_user,
     get_user_by_email,
+    get_user_by_id,
 )
 
 app = Flask(__name__)
@@ -29,6 +30,18 @@ with app.app_context():
 
 
 # ------------------------------------------------------------------ #
+# Template context                                                    #
+# ------------------------------------------------------------------ #
+
+@app.context_processor
+def inject_current_user():
+    user_id = session.get("user_id")
+    if user_id:
+        return {"current_user": get_user_by_id(user_id)}
+    return {"current_user": None}
+
+
+# ------------------------------------------------------------------ #
 # Routes                                                              #
 # ------------------------------------------------------------------ #
 
@@ -39,6 +52,8 @@ def landing():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id"):
+        return redirect(url_for("working"))
     if request.method == "GET":
         return render_template("register.html")
 
@@ -65,12 +80,30 @@ def register():
 
     user_id = create_user(name, email, generate_password_hash(password))
     session["user_id"] = user_id
-    return redirect(url_for("profile"))
+    return redirect(url_for("working"))
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if session.get("user_id"):
+        return redirect(url_for("working"))
+    if request.method == "GET":
+        return render_template("login.html")
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    if not email or not email.strip() or not password:
+        abort(400)
+
+    email = email.strip().lower()
+
+    user = get_user_by_email(email)
+    if user is None or not check_password_hash(user["password_hash"], password):
+        return render_template("login.html", error="Invalid email or password.")
+
+    session["user_id"] = user["id"]
+    return redirect(url_for("working"))
 
 
 @app.route("/terms")
@@ -94,7 +127,8 @@ def working():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
