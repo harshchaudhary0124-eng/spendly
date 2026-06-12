@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{%- set cat_class = {
+    'Food':          'cat-food',
+    'Transport':     'cat-transport',
+    'Bills':         'cat-bills',
+    'Health':        'cat-health',
+    'Entertainment': 'cat-entertainment',
+    'Shopping':      'cat-shopping',
+    'Other':         'cat-other'
+} -%}
+
+<div class="profile-page">
+
+    <!-- ============================================================ -->
+    <!-- Profile Header                                                -->
+    <!-- ============================================================ -->
+
+    <div class="profile-header-card">
+        <div class="profile-avatar">
+            {{ user['name'].split()[0][0] | upper }}{{ user['name'].split()[-1][0] | upper }}
+        </div>
+        <div class="profile-identity">
+            <h1 class="profile-name">{{ user['name'] }}</h1>
+            <p class="profile-email">{{ user['email'] }}</p>
+            <span class="profile-since-badge">Member since {{ member_since }}</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Payment Overview                                              -->
+    <!-- ============================================================ -->
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total Spent</span>
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-context">This month</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Transactions</span>
+            <span class="stat-value">{{ stats.count }}</span>
+            <span class="stat-context">This month</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Avg. per Transaction</span>
+            <span class="stat-value">{{ stats.avg_per_tx }}</span>
+            <span class="stat-context">Per expense</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Top Category</span>
+            <span class="stat-value stat-value--category">{{ stats.top_category }}</span>
+            <span class="stat-context">Highest spend</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Mid grid: Category breakdown + Transaction statistics         -->
+    <!-- ============================================================ -->
+
+    <div class="profile-mid-grid">
+
+        <!-- Spending by Category -->
+        <div class="profile-card">
+            <h2 class="card-title">Spending by Category</h2>
+            {% if categories_data %}
+            <div class="category-list">
+                {% for cat in categories_data %}
+                <div class="category-row">
+                    <div class="category-meta">
+                        <span class="cat-dot {{ cat_class.get(cat.name, 'cat-other') }}"></span>
+                        <span class="cat-name">{{ cat.name }}</span>
+                    </div>
+                    <div class="cat-bar-track">
+                        <div class="cat-bar {{ cat_class.get(cat.name, 'cat-other') }}"
+                             style="width: {{ cat.pct }}%"></div>
+                    </div>
+                    <div class="cat-amounts">
+                        <span class="cat-amount">{{ cat.amount }}</span>
+                        <span class="cat-pct">{{ cat.pct }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">No spending data yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Transaction Statistics -->
+        <div class="profile-card">
+            <h2 class="card-title">Transaction Statistics</h2>
+            <div class="tx-stats-list">
+                <div class="tx-stat-row">
+                    <span class="tx-stat-label">Highest Expense</span>
+                    <div class="tx-stat-right">
+                        {% if stats.highest %}
+                        <span class="tx-stat-value">{{ stats.highest.amount }}</span>
+                        <span class="tx-stat-sub">{{ stats.highest.description }}</span>
+                        {% else %}
+                        <span class="tx-stat-value">—</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="tx-stat-row">
+                    <span class="tx-stat-label">Avg. Daily Spend</span>
+                    <div class="tx-stat-right">
+                        <span class="tx-stat-value">{{ stats.avg_daily }}</span>
+                        <span class="tx-stat-sub">Over {{ stats.unique_days }} active days</span>
+                    </div>
+                </div>
+                <div class="tx-stat-row">
+                    <span class="tx-stat-label">Categories Used</span>
+                    <div class="tx-stat-right">
+                        <span class="tx-stat-value">{{ stats.num_categories }}</span>
+                        <span class="tx-stat-sub">Unique categories</span>
+                    </div>
+                </div>
+                <div class="tx-stat-row">
+                    <span class="tx-stat-label">Total Transactions</span>
+                    <div class="tx-stat-right">
+                        <span class="tx-stat-value">{{ stats.count }}</span>
+                        <span class="tx-stat-sub">This month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Recent Transactions                                           -->
+    <!-- ============================================================ -->
+
+    <div class="profile-card">
+        <h2 class="card-title">Recent Transactions</h2>
+        {% if recent %}
+        <div class="tx-table">
+            <div class="tx-header">
+                <span>Date</span>
+                <span>Description</span>
+                <span>Category</span>
+                <span class="tx-col-right">Amount</span>
+            </div>
+            {% for tx in recent %}
+            <div class="tx-row">
+                <span class="tx-date">{{ tx.date }}</span>
+                <span class="tx-desc">{{ tx.description }}</span>
+                <span class="tx-cat-badge {{ cat_class.get(tx.category, 'cat-other') }}">
+                    {{ tx.category }}
+                </span>
+                <span class="tx-amount">{{ tx.amount }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-state">No transactions yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

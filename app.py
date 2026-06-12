@@ -7,6 +7,8 @@ from flask import (
     session,
     abort,
 )
+from datetime import datetime
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db import (
@@ -16,6 +18,9 @@ from database.db import (
     create_user,
     get_user_by_email,
     get_user_by_id,
+    update_user_name,
+    update_user_password,
+    get_expenses_by_user,
 )
 
 app = Flask(__name__)
@@ -53,7 +58,7 @@ def landing():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if session.get("user_id"):
-        return redirect(url_for("working"))
+        return redirect(url_for("profile"))
     if request.method == "GET":
         return render_template("register.html")
 
@@ -80,13 +85,13 @@ def register():
 
     user_id = create_user(name, email, generate_password_hash(password))
     session["user_id"] = user_id
-    return redirect(url_for("working"))
+    return redirect(url_for("profile"))
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if session.get("user_id"):
-        return redirect(url_for("working"))
+        return redirect(url_for("profile"))
     if request.method == "GET":
         return render_template("login.html")
 
@@ -103,7 +108,7 @@ def login():
         return render_template("login.html", error="Invalid email or password.")
 
     session["user_id"] = user["id"]
-    return redirect(url_for("working"))
+    return redirect(url_for("profile"))
 
 
 @app.route("/terms")
@@ -133,7 +138,117 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = get_user_by_id(session["user_id"])
+    member_since = datetime.strptime(
+        user["created_at"], "%Y-%m-%d %H:%M:%S"
+    ).strftime("%B %Y")
+
+    expenses = get_expenses_by_user(session["user_id"])
+
+    total     = sum(e["amount"] for e in expenses)
+    count     = len(expenses)
+    avg_per_tx = round(total / count, 2) if count else 0.0
+
+    by_category = {}
+    for e in expenses:
+        by_category[e["category"]] = round(
+            by_category.get(e["category"], 0) + e["amount"], 2
+        )
+    categories_sorted = sorted(by_category.items(), key=lambda x: x[1], reverse=True)
+    top_category = categories_sorted[0][0] if categories_sorted else "—"
+
+    categories_data = [
+        {
+            "name": name,
+            "amount": f"₹{amount:,.2f}",
+            "pct": round(amount / total * 100) if total else 0,
+        }
+        for name, amount in categories_sorted
+    ]
+
+    highest_tx = None
+    if expenses:
+        h = max(expenses, key=lambda e: e["amount"])
+        highest_tx = {
+            "amount": f"₹{h['amount']:,.2f}",
+            "description": h["description"] if h["description"] else h["category"],
+        }
+
+    unique_days = len(set(e["date"] for e in expenses))
+    avg_daily   = round(total / unique_days, 2) if unique_days else 0.0
+
+    recent = [
+        {
+            "date": datetime.strptime(e["date"], "%Y-%m-%d").strftime("%b %d"),
+            "description": e["description"] if e["description"] else e["category"],
+            "category": e["category"],
+            "amount": f"₹{e['amount']:,.2f}",
+        }
+        for e in expenses[:5]
+    ]
+
+    stats = {
+        "total":       f"₹{total:,.2f}",
+        "count":       count,
+        "avg_per_tx":  f"₹{avg_per_tx:,.2f}",
+        "top_category": top_category,
+        "highest":     highest_tx,
+        "unique_days": unique_days,
+        "avg_daily":   f"₹{avg_daily:,.2f}",
+        "num_categories": len(categories_sorted),
+    }
+
+    return render_template(
+        "profile.html",
+        user=user,
+        member_since=member_since,
+        stats=stats,
+        categories_data=categories_data,
+        recent=recent,
+    )
+
+
+@app.route("/profile/update-name", methods=["POST"])
+def profile_update_name():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    name = request.form.get("name")
+    if not name or not name.strip():
+        abort(400)
+
+    update_user_name(session["user_id"], name.strip())
+    return redirect(url_for("profile", name_success="1"))
+
+
+@app.route("/profile/update-password", methods=["POST"])
+def profile_update_password():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    current_pw = request.form.get("current_password")
+    new_pw     = request.form.get("new_password")
+    confirm_pw = request.form.get("confirm_password")
+
+    if not current_pw or not new_pw or not confirm_pw:
+        abort(400)
+
+    user = get_user_by_id(session["user_id"])
+
+    if not check_password_hash(user["password_hash"], current_pw):
+        return redirect(url_for("profile", pw_error="Current password is incorrect."))
+
+    if new_pw != confirm_pw:
+        return redirect(url_for("profile", pw_error="New passwords do not match."))
+
+    if len(new_pw) < 8:
+        return redirect(url_for("profile", pw_error="Password must be at least 8 characters."))
+
+    update_user_password(session["user_id"], generate_password_hash(new_pw))
+    return redirect(url_for("profile", pw_success="1"))
 
 
 @app.route("/expenses/add")

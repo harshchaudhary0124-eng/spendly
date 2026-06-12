@@ -82,6 +82,31 @@ def create_user(name, email, password_hash):
     return user_id
 
 
+def update_user_name(user_id, new_name):
+    conn = get_db()
+    conn.execute("UPDATE users SET name = ? WHERE id = ?", (new_name, user_id))
+    conn.commit()
+    conn.close()
+
+
+def update_user_password(user_id, new_password_hash):
+    conn = get_db()
+    conn.execute("UPDATE users SET password_hash = ? WHERE id = ?", (new_password_hash, user_id))
+    conn.commit()
+    conn.close()
+
+
+def get_expenses_by_user(user_id):
+    """Return all expenses for a user, newest first."""
+    conn = get_db()
+    rows = conn.execute(
+        "SELECT * FROM expenses WHERE user_id = ? ORDER BY date DESC",
+        (user_id,),
+    ).fetchall()
+    conn.close()
+    return rows
+
+
 def seed_db():
     """Insert demo data once. Returns early if the users table already has rows."""
     conn = get_db()
