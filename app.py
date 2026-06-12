@@ -7,7 +7,7 @@ from flask import (
     session,
     abort,
 )
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -20,7 +20,7 @@ from database.db import (
     get_user_by_id,
     update_user_name,
     update_user_password,
-    get_expenses_by_user,
+    get_expenses_by_user_in_range,
 )
 
 app = Flask(__name__)
@@ -32,6 +32,35 @@ app.secret_key = "dev-secret-change-me"
 with app.app_context():
     init_db()
     seed_db()
+
+
+# ------------------------------------------------------------------ #
+# Date filter helpers                                                 #
+# ------------------------------------------------------------------ #
+
+_PERIOD_PRESETS = {"7d": 7, "30d": 30, "3m": 90, "1y": 365}
+
+
+def _safe_parse_date(value):
+    if not value:
+        return None
+    try:
+        return str(datetime.strptime(value, "%Y-%m-%d").date())
+    except ValueError:
+        return None
+
+
+def resolve_date_filter(period, from_param, to_param):
+    """Return (from_date, to_date, active_period) from raw query-string values."""
+    if period in _PERIOD_PRESETS:
+        from_date = str((datetime.today() - timedelta(days=_PERIOD_PRESETS[period])).date())
+        return from_date, None, period
+    if period == "all":
+        return None, None, "all"
+    from_date = _safe_parse_date(from_param)
+    to_date = _safe_parse_date(to_param)
+    active_period = "custom" if (from_date or to_date) else "all"
+    return from_date, to_date, active_period
 
 
 # ------------------------------------------------------------------ #
@@ -146,7 +175,13 @@ def profile():
         user["created_at"], "%Y-%m-%d %H:%M:%S"
     ).strftime("%B %Y")
 
-    expenses = get_expenses_by_user(session["user_id"])
+    from_date, to_date, active_period = resolve_date_filter(
+        request.args.get("period", "").strip().lower(),
+        request.args.get("from", "").strip(),
+        request.args.get("to", "").strip(),
+    )
+
+    expenses = get_expenses_by_user_in_range(session["user_id"], from_date, to_date)
 
     total     = sum(e["amount"] for e in expenses)
     count     = len(expenses)
@@ -208,6 +243,9 @@ def profile():
         stats=stats,
         categories_data=categories_data,
         recent=recent,
+        active_period=active_period,
+        filter_from=from_date or "",
+        filter_to=to_date or "",
     )
 
 

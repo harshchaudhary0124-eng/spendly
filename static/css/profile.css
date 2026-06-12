@@ -385,6 +385,102 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Date Filter Bar                                                     */
+/* ------------------------------------------------------------------ */
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.filter-presets {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.filter-pill {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+}
+
+.filter-pill:hover:not(.filter-pill--active) {
+    border-color: var(--ink-soft);
+    color: var(--ink);
+}
+
+.filter-pill--active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+}
+
+.filter-custom-form {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+.filter-custom-form--active .filter-date-input {
+    border-color: var(--ink-soft);
+}
+
+.filter-date-input {
+    padding: 0.28rem 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--ink);
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.filter-date-input:focus {
+    border-color: var(--accent);
+}
+
+.filter-range-sep {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    flex-shrink: 0;
+}
+
+.filter-apply-btn {
+    padding: 0.3rem 0.85rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+}
+
+.filter-apply-btn:hover {
+    opacity: 0.85;
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -426,5 +522,14 @@
     .tx-header span:nth-child(3),
     .tx-row .tx-cat-badge {
         display: none;
+    }
+
+    .filter-bar {
+        gap: 0.5rem;
+    }
+
+    .filter-custom-form {
+        margin-left: 0;
+        width: 100%;
     }
 }

@@ -18,6 +18,15 @@
     'Other':         'cat-other'
 } -%}
 
+{%- set period_label = {
+    'all':    'All time',
+    '7d':     'Last 7 days',
+    '30d':    'Last 30 days',
+    '3m':     'Last 3 months',
+    '1y':     'Last year',
+    'custom': 'Custom range'
+}.get(active_period, 'All time') -%}
+
 <div class="profile-page">
 
     <!-- ============================================================ -->
@@ -36,6 +45,42 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- Date Filter Bar                                              -->
+    <!-- ============================================================ -->
+
+    <div class="filter-bar">
+        <div class="filter-presets">
+            <a href="{{ url_for('profile') }}"
+               class="filter-pill {% if active_period == 'all' %}filter-pill--active{% endif %}">
+                All
+            </a>
+            <a href="{{ url_for('profile', period='7d') }}"
+               class="filter-pill {% if active_period == '7d' %}filter-pill--active{% endif %}">
+                7 days
+            </a>
+            <a href="{{ url_for('profile', period='30d') }}"
+               class="filter-pill {% if active_period == '30d' %}filter-pill--active{% endif %}">
+                30 days
+            </a>
+            <a href="{{ url_for('profile', period='3m') }}"
+               class="filter-pill {% if active_period == '3m' %}filter-pill--active{% endif %}">
+                3 months
+            </a>
+            <a href="{{ url_for('profile', period='1y') }}"
+               class="filter-pill {% if active_period == '1y' %}filter-pill--active{% endif %}">
+                1 year
+            </a>
+        </div>
+        <form method="GET" action="{{ url_for('profile') }}"
+              class="filter-custom-form {% if active_period == 'custom' %}filter-custom-form--active{% endif %}">
+            <input type="date" name="from" value="{{ filter_from }}" class="filter-date-input">
+            <span class="filter-range-sep">→</span>
+            <input type="date" name="to" value="{{ filter_to }}" class="filter-date-input">
+            <button type="submit" class="filter-apply-btn">Apply</button>
+        </form>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- Payment Overview                                              -->
     <!-- ============================================================ -->
 
@@ -43,12 +88,12 @@
         <div class="stat-card">
             <span class="stat-label">Total Spent</span>
             <span class="stat-value">{{ stats.total }}</span>
-            <span class="stat-context">This month</span>
+            <span class="stat-context">{{ period_label }}</span>
         </div>
         <div class="stat-card">
             <span class="stat-label">Transactions</span>
             <span class="stat-value">{{ stats.count }}</span>
-            <span class="stat-context">This month</span>
+            <span class="stat-context">{{ period_label }}</span>
         </div>
         <div class="stat-card">
             <span class="stat-label">Avg. per Transaction</span>
@@ -128,7 +173,7 @@
                     <span class="tx-stat-label">Total Transactions</span>
                     <div class="tx-stat-right">
                         <span class="tx-stat-value">{{ stats.count }}</span>
-                        <span class="tx-stat-sub">This month</span>
+                        <span class="tx-stat-sub">{{ period_label }}</span>
                     </div>
                 </div>
             </div>
