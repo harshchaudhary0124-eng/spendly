@@ -107,6 +107,27 @@ def get_expenses_by_user(user_id):
     return rows
 
 
+def get_expenses_by_user_in_range(user_id, from_date, to_date):
+    """Return expenses for a user filtered by an optional date range, newest first.
+
+    from_date and to_date are ISO strings (YYYY-MM-DD) or None.
+    When both are None the result is identical to get_expenses_by_user.
+    """
+    conn = get_db()
+    sql = "SELECT * FROM expenses WHERE user_id = ?"
+    params = [user_id]
+    if from_date is not None:
+        sql += " AND date >= ?"
+        params.append(from_date)
+    if to_date is not None:
+        sql += " AND date <= ?"
+        params.append(to_date)
+    sql += " ORDER BY date DESC"
+    rows = conn.execute(sql, params).fetchall()
+    conn.close()
+    return rows
+
+
 def seed_db():
     """Insert demo data once. Returns early if the users table already has rows."""
     conn = get_db()
