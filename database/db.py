@@ -142,6 +142,14 @@ def get_expenses_by_user(user_id):
     return rows
 
 
+def delete_expense(expense_id):
+    """Delete the expense row with the given id."""
+    conn = get_db()
+    conn.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+    conn.commit()
+    conn.close()
+
+
 def get_expenses_by_user_in_range(user_id, from_date, to_date):
     """Return expenses for a user filtered by an optional date range, newest first.
 
