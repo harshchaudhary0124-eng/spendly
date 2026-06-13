@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+{% block title %}Analytics — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analytics.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="analytics-page">
+
+  {# ── HERO ── #}
+  <section class="analytics-hero">
+    <div class="analytics-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+        <path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>
+      </svg>
+      Coming Soon
+    </div>
+
+    <div class="analytics-hero-text">
+      <h1 class="analytics-title">Advanced Analytics</h1>
+      <p class="analytics-desc">
+        Transform your spending data into actionable financial intelligence.
+        Gain deeper insights into your habits, trends, savings opportunities,
+        and financial growth with powerful analytics designed for modern money management.
+      </p>
+    </div>
+
+    <div class="analytics-cta">
+      <a href="#notify-card" class="btn-accent" id="notify-scroll-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        Notify Me
+      </a>
+      <a href="{{ url_for('profile') }}" class="btn-ghost-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+        </svg>
+        Back to Dashboard
+      </a>
+    </div>
+  </section>
+
+  {# ── ANALYTICS PREVIEW CARD ── #}
+  <section>
+    <div class="analytics-preview-card">
+
+      {# Header #}
+      <div class="preview-card-header">
+        <div class="preview-card-title-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+          </svg>
+          <span>Analytics Overview</span>
+          <span class="preview-badge">Preview</span>
+        </div>
+        <div class="preview-dots">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+        </div>
+      </div>
+
+      {# Stat row #}
+      <div class="preview-stats">
+        <div class="preview-stat">
+          <p class="preview-stat-label">Monthly Spending</p>
+          <p class="preview-stat-value">$2,840</p>
+          <p class="preview-stat-trend trend-down">−12%</p>
+        </div>
+        <div class="preview-stat">
+          <p class="preview-stat-label">Savings Growth</p>
+          <p class="preview-stat-value">+$640</p>
+          <p class="preview-stat-trend trend-up">+8.2%</p>
+        </div>
+        <div class="preview-stat">
+          <p class="preview-stat-label">Financial Score</p>
+          <p class="preview-stat-value">84/100</p>
+          <p class="preview-stat-trend trend-up">+4 pts</p>
+        </div>
+      </div>
+
+      {# Chart with frosted lock overlay #}
+      <div class="preview-chart-area">
+        <p class="preview-chart-heading">Monthly Spending Trends</p>
+
+        <svg class="analytics-chart-svg" viewBox="0 0 600 196" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="chartAreaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#1a472a" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#1a472a" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          {# Area fill — data: Jan 1200, Feb 980, Mar 1450, Apr 1100, May 1320, Jun 890 #}
+          <path d="M 0,83 L 120,138 L 240,20 L 360,108 L 480,53 L 600,160 L 600,160 L 0,160 Z"
+                fill="url(#chartAreaGrad)"/>
+          {# Stroke line #}
+          <polyline points="0,83 120,138 240,20 360,108 480,53 600,160"
+                    fill="none" stroke="#1a472a" stroke-width="2" stroke-linejoin="round"/>
+          {# X-axis labels #}
+          <text x="0"   y="182" class="chart-x-label">Jan</text>
+          <text x="100" y="182" class="chart-x-label">Feb</text>
+          <text x="210" y="182" class="chart-x-label">Mar</text>
+          <text x="330" y="182" class="chart-x-label">Apr</text>
+          <text x="450" y="182" class="chart-x-label">May</text>
+          <text x="565" y="182" class="chart-x-label">Jun</text>
+        </svg>
+
+        {# Frosted glass lock overlay #}
+        <div class="chart-lock-overlay">
+          <div class="lock-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <p class="chart-lock-text">
+            Full Analytics
+            <em>Available at launch</em>
+          </p>
+        </div>
+      </div>
+
+      {# Bottom widgets #}
+      <div class="preview-widgets">
+        <div class="preview-widget">
+          <div class="widget-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+              <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+            </svg>
+            <span>Category Breakdown</span>
+          </div>
+          <div class="widget-placeholder"></div>
+          <span class="widget-soon-badge">Soon</span>
+        </div>
+        <div class="preview-widget">
+          <div class="widget-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+            </svg>
+            <span>Expense Forecasting</span>
+          </div>
+          <div class="widget-placeholder"></div>
+          <span class="widget-soon-badge">Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {# ── UPCOMING FEATURES GRID ── #}
+  <section>
+    <div class="analytics-section-header" style="margin-bottom: 2rem;">
+      <h2 class="analytics-section-title">Upcoming Features</h2>
+      <p class="analytics-section-sub">Everything you need to take control of your financial future.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Smart Spending Trends</h3>
+        <p class="feature-desc">Visualize spending patterns across time with intelligent pattern recognition.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+            <path d="M9 18h6"/><path d="M10 22h4"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">AI-Powered Insights</h3>
+        <p class="feature-desc">Receive personalized financial recommendations tailored to your habits.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Budget Intelligence</h3>
+        <p class="feature-desc">Identify overspending before it becomes a problem with predictive alerts.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Financial Forecasting</h3>
+        <p class="feature-desc">Predict future expenses and cash flow with confidence.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Goal Tracking</h3>
+        <p class="feature-desc">Measure progress toward savings targets with precision metrics.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            <path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Custom Reports</h3>
+        <p class="feature-desc">Generate detailed financial summaries on your schedule.</p>
+      </div>
+
+    </div>
+  </section>
+
+  {# ── DEVELOPMENT PROGRESS ── #}
+  <section>
+    <div class="analytics-section-header" style="margin-bottom: 2rem;">
+      <h2 class="analytics-section-title">Development Progress</h2>
+      <p class="analytics-section-sub">We're shipping this in stages. Here's where we are.</p>
+    </div>
+
+    <div class="progress-card">
+      <div class="progress-items">
+
+        {% set items = [
+          ('Data Infrastructure',   'done'),
+          ('Analytics Engine',      'done'),
+          ('Visualization Layer',   'done'),
+          ('AI Insights Module',    'in-progress'),
+          ('Beta Testing',          'pending'),
+          ('Public Release',        'pending'),
+        ] %}
+
+        {% for label, status in items %}
+        <div class="progress-item">
+          {# Status icon #}
+          <div class="progress-status-icon {{ status }}">
+            {% if status == 'done' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+            </svg>
+            {% elif status == 'in-progress' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+            </svg>
+            {% else %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {% endif %}
+          </div>
+
+          <div class="progress-item-body">
+            <div class="progress-item-top">
+              <span class="progress-item-label {% if status == 'pending' %}pending{% endif %}">{{ label }}</span>
+              {% if status == 'done' %}
+                <span class="progress-item-status status-done">Complete</span>
+              {% elif status == 'in-progress' %}
+                <span class="progress-item-status status-in-progress">In Progress</span>
+              {% else %}
+                <span class="progress-item-status status-pending">Upcoming</span>
+              {% endif %}
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill {{ status }}"></div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <div class="progress-footer">
+        <div class="progress-footer-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+          </svg>
+        </div>
+        <p class="progress-footer-text">
+          Estimated public release: <strong>Q3 2025</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {# ── EMAIL NOTIFY CARD ── #}
+  <section id="notify-card">
+    <div class="notify-card">
+      <div class="notify-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+      </div>
+
+      <h2 class="notify-title">Be the First to Experience Advanced Analytics</h2>
+      <p class="notify-subtitle">We'll only notify you when the feature launches. No spam, ever.</p>
+
+      <form class="notify-form" id="notify-form" novalidate>
+        <input
+          type="email"
+          class="notify-input"
+          id="notify-email"
+          placeholder="Enter your email"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="notify-submit">Notify Me</button>
+      </form>
+
+      <div class="notify-success" id="notify-success">
+        <div class="notify-success-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <p class="notify-success-text">You're on the list! We'll notify you at launch.</p>
+      </div>
+
+      <div class="notify-privacy">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+        </svg>
+        <span class="notify-privacy-text">We'll only notify you when the feature launches.</span>
+      </div>
+    </div>
+  </section>
+
+  {# ── BOTTOM MESSAGE ── #}
+  <div class="analytics-bottom">
+    <p>We're building something powerful to help you understand your finances like never before.</p>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var scrollBtn = document.getElementById('notify-scroll-btn');
+    if (scrollBtn) {
+      scrollBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var target = document.getElementById('notify-card');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    var form    = document.getElementById('notify-form');
+    var success = document.getElementById('notify-success');
+    if (form && success) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = document.getElementById('notify-email');
+        if (!input || !input.value.trim()) return;
+        form.style.display = 'none';
+        success.style.display = 'flex';
+      });
+    }
+  })();
+</script>
+{% endblock %}
