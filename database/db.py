@@ -96,6 +96,20 @@ def update_user_password(user_id, new_password_hash):
     conn.close()
 
 
+def create_expense(user_id, amount, category, date, description):
+    """Insert a new expense row and return its id."""
+    conn = get_db()
+    cursor = conn.execute(
+        "INSERT INTO expenses (user_id, amount, category, date, description) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (user_id, float(amount), category, date, description or None),
+    )
+    conn.commit()
+    expense_id = cursor.lastrowid
+    conn.close()
+    return expense_id
+
+
 def get_expenses_by_user(user_id):
     """Return all expenses for a user, newest first."""
     conn = get_db()

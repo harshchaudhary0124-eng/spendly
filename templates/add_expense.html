@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_expense.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="add-expense-page">
+    <div class="add-expense-card">
+
+        <h1 class="add-expense-title">Add Expense</h1>
+        <p class="add-expense-subtitle">Record a new transaction to your account.</p>
+
+        {% if error %}
+        <div class="auth-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('add_expense') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group">
+                <label for="amount" class="form-label">Amount (₹)</label>
+                <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    class="form-input"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="0.00"
+                    value="{{ amount or '' }}"
+                    required
+                    autofocus
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-input" required>
+                    <option value="" disabled {% if not category %}selected{% endif %}>Select a category</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date" class="form-label">Date</label>
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    class="form-input"
+                    value="{{ date or today }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label">Description <span class="form-label-optional">(optional)</span></label>
+                <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    class="form-input"
+                    placeholder="e.g. Lunch at cafe"
+                    value="{{ description or '' }}"
+                    maxlength="200"
+                >
+            </div>
+
+            <div class="add-expense-actions">
+                <button type="submit" class="btn-submit">Save Expense</button>
+                <a href="{{ url_for('profile') }}" class="btn-ghost">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}

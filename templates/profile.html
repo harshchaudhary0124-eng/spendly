@@ -42,7 +42,23 @@
             <p class="profile-email">{{ user['email'] }}</p>
             <span class="profile-since-badge">Member since {{ member_since }}</span>
         </div>
+        <a href="{{ url_for('add_expense') }}" class="btn-primary profile-add-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14"/><path d="M5 12h14"/>
+            </svg>
+            Add Expense
+        </a>
     </div>
+
+    <!-- ============================================================ -->
+    <!-- Success Banner                                              -->
+    <!-- ============================================================ -->
+
+    {% if request.args.get('added') == '1' %}
+    <div class="success-banner" id="js-success-banner">
+        Expense added successfully!
+    </div>
+    {% endif %}
 
     <!-- ============================================================ -->
     <!-- Date Filter Bar                                              -->
@@ -243,4 +259,15 @@
 
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+{% if request.args.get('added') == '1' %}
+<script>
+  (function() {
+    var b = document.getElementById('js-success-banner');
+    if (b) setTimeout(function() { b.style.display = 'none'; }, 4000);
+  })();
+</script>
+{% endif %}
 {% endblock %}
