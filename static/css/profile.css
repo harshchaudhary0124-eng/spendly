@@ -428,7 +428,7 @@
 .tx-header,
 .tx-row {
     display: grid;
-    grid-template-columns: 60px 1fr 120px 80px;
+    grid-template-columns: 60px 1fr 120px 80px 40px;
     align-items: center;
     gap: 0.75rem;
 }
@@ -492,6 +492,22 @@
     color: var(--ink);
     text-align: right;
     white-space: nowrap;
+}
+
+.tx-actions {
+    text-align: right;
+}
+
+.tx-edit-link {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.tx-edit-link:hover {
+    text-decoration: underline;
 }
 
 /* ------------------------------------------------------------------ */
@@ -636,7 +652,7 @@
     /* Hide category column in transactions on small screens */
     .tx-header,
     .tx-row {
-        grid-template-columns: 55px 1fr 72px;
+        grid-template-columns: 55px 1fr 72px 40px;
     }
 
     .tx-header span:nth-child(3),

@@ -25,6 +25,8 @@ from database.db import (
     update_user_password,
     get_expenses_by_user_in_range,
     create_expense,
+    get_expense_by_id,
+    update_expense,
 )
 
 app = Flask(__name__)
@@ -229,6 +231,7 @@ def profile():
 
     recent = [
         {
+            "id": e["id"],
             "date": datetime.strptime(e["date"], "%Y-%m-%d").strftime("%b %d"),
             "description": e["description"] if e["description"] else e["category"],
             "category": e["category"],
@@ -314,6 +317,20 @@ def _render_add_expense_form(error, amount_raw, category, date_raw, description,
     )
 
 
+def _render_edit_expense_form(error, expense_id, amount_raw, category, date_raw, description, csrf_token):
+    return render_template(
+        "edit_expense.html",
+        error=error,
+        expense_id=expense_id,
+        amount=amount_raw,
+        category=category,
+        date=date_raw,
+        description=description or "",
+        categories=_ALLOWED_CATEGORIES,
+        csrf_token=csrf_token,
+    )
+
+
 @app.route("/expenses/add", methods=["GET", "POST"])
 def add_expense():
     if not session.get("user_id"):
@@ -364,9 +381,62 @@ def add_expense():
     return redirect(url_for("profile", added="1"))
 
 
-@app.route("/expenses/<int:id>/edit")
+@app.route("/expenses/<int:id>/edit", methods=["GET", "POST"])
 def edit_expense(id):
-    return "Edit expense — coming in Step 8"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(32)
+    csrf_token = session["csrf_token"]
+
+    expense = get_expense_by_id(id)
+    if expense is None:
+        abort(404)
+    if expense["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return _render_edit_expense_form(
+            None,
+            expense["id"],
+            expense["amount"],
+            expense["category"],
+            expense["date"],
+            expense["description"] or "",
+            csrf_token,
+        )
+
+    if request.form.get("csrf_token") != csrf_token:
+        abort(403)
+
+    amount_raw  = request.form.get("amount", "").strip()
+    category    = request.form.get("category", "").strip()
+    date_raw    = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip() or None
+
+    try:
+        amount = float(amount_raw)
+        if amount <= 0 or not math.isfinite(amount):
+            raise ValueError
+    except (ValueError, TypeError):
+        return _render_edit_expense_form(
+            "Amount must be a number greater than 0.",
+            id, amount_raw, category, date_raw, description, csrf_token,
+        )
+
+    if category not in _ALLOWED_CATEGORIES:
+        abort(400)
+
+    parsed_date = _safe_parse_date(date_raw)
+    if not parsed_date:
+        return _render_edit_expense_form(
+            "Date is required and must be a valid date.",
+            id, amount_raw, category, date_raw, description, csrf_token,
+        )
+
+    update_expense(id, amount, category, parsed_date, description)
+    return redirect(url_for("profile", edited="1"))
 
 
 @app.route("/expenses/<int:id>/delete")
