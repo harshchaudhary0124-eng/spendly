@@ -428,7 +428,7 @@
 .tx-header,
 .tx-row {
     display: grid;
-    grid-template-columns: 60px 1fr 120px 80px 40px;
+    grid-template-columns: 60px 1fr 120px 80px 90px;
     align-items: center;
     gap: 0.75rem;
 }
@@ -495,18 +495,30 @@
 }
 
 .tx-actions {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
 }
 
-.tx-edit-link {
+.tx-edit-link,
+.tx-delete-link {
     font-size: 0.75rem;
     font-weight: 500;
-    color: var(--accent);
     text-decoration: none;
     white-space: nowrap;
 }
 
-.tx-edit-link:hover {
+.tx-edit-link {
+    color: var(--accent);
+}
+
+.tx-delete-link {
+    color: var(--danger);
+}
+
+.tx-edit-link:hover,
+.tx-delete-link:hover {
     text-decoration: underline;
 }
 
@@ -652,7 +664,7 @@
     /* Hide category column in transactions on small screens */
     .tx-header,
     .tx-row {
-        grid-template-columns: 55px 1fr 72px 40px;
+        grid-template-columns: 55px 1fr 72px 90px;
     }
 
     .tx-header span:nth-child(3),

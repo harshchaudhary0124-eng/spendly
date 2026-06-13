@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Expense — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/delete_expense.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="delete-expense-page">
+    <div class="delete-expense-card">
+
+        <h1 class="delete-expense-title">Delete Expense</h1>
+        <p class="delete-expense-subtitle">This action cannot be undone. Please confirm the details below.</p>
+
+        <div class="expense-detail-box">
+            <div class="expense-detail-row">
+                <span class="expense-detail-label">Amount</span>
+                <span class="expense-detail-value">₹{{ "%.2f"|format(expense['amount']) }}</span>
+            </div>
+            <div class="expense-detail-row">
+                <span class="expense-detail-label">Category</span>
+                <span class="expense-detail-value">{{ expense['category'] }}</span>
+            </div>
+            <div class="expense-detail-row">
+                <span class="expense-detail-label">Date</span>
+                <span class="expense-detail-value">{{ expense['date'] }}</span>
+            </div>
+            {% if expense['description'] %}
+            <div class="expense-detail-row">
+                <span class="expense-detail-label">Description</span>
+                <span class="expense-detail-value">{{ expense['description'] }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <form method="POST" action="{{ url_for('delete_expense', id=expense['id']) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="delete-expense-actions">
+                <button type="submit" class="btn-danger">Delete Expense</button>
+                <a href="{{ url_for('profile') }}" class="btn-ghost">Cancel</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
