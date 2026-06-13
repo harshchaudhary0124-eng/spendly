@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '=== SPENDLY: SESSION START ===' && echo '' && echo 'FEATURES DELIVERED (git history):' && git log --no-merges --pretty=format:'  [%ad] %s' --date=short | head -25 && echo '' && echo 'CURRENT BRANCH:' && git branch --show-current && echo '' && echo 'WORKING TREE:' && git status --short && echo '' && echo 'NOTE TO CLAUDE: At the very start of this session, before the user says anything, greet them and present a concise bullet-point summary of what has been built in Spendly so far. Group features by area: Auth, Profile, Expenses, Analytics. Keep it brief and friendly — this is a session kickoff briefing.'"
+            "command": "echo 'SPENDLY SESSION START — INSTRUCTION FOR CLAUDE: You MUST begin your very first response this session with a warm greeting and a concise bullet-point summary of all Spendly features built so far, grouped by area (Auth, Profile, Expenses, Analytics). Do this BEFORE answering whatever the user asked. Here is the project context:' && echo '' && echo 'Recent commits:' && git log --no-merges --pretty=format:'  [%ad] %s' --date=short | head -20 && echo '' && echo \"Branch: $(git branch --show-current)\" && STATUS=$(git status --short) && echo \"Status: ${STATUS:-(clean)}\""
           }
         ]
       }
