@@ -137,6 +137,103 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Analytics Teaser Banner                                            */
+/* ------------------------------------------------------------------ */
+
+.analytics-teaser {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 1.5rem;
+    background: var(--accent-light);
+    border: 1px solid rgba(26, 71, 42, 0.18);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+    cursor: pointer;
+}
+
+.analytics-teaser:hover {
+    background: #deeae2;
+    border-color: rgba(26, 71, 42, 0.32);
+    box-shadow: 0 4px 16px rgba(26, 71, 42, 0.1);
+}
+
+.analytics-teaser-left {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    flex-shrink: 0;
+}
+
+.analytics-teaser-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--paper-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.analytics-teaser-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.analytics-teaser-heading {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.analytics-teaser-sub {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+}
+
+.analytics-teaser-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.teaser-chip {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(26, 71, 42, 0.08);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.analytics-teaser-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+    .analytics-teaser-chips { display: none; }
+}
+
+@media (max-width: 480px) {
+    .analytics-teaser { flex-wrap: wrap; gap: 0.75rem; }
+}
+
+/* ------------------------------------------------------------------ */
 /* Mid grid — 2 columns (category wider)                              */
 /* ------------------------------------------------------------------ */
 
