@@ -66,6 +66,12 @@
     </div>
     {% endif %}
 
+    {% if request.args.get('deleted') == '1' %}
+    <div class="success-banner" id="js-deleted-banner">
+        Expense deleted successfully!
+    </div>
+    {% endif %}
+
     <!-- ============================================================ -->
     <!-- Date Filter Bar                                              -->
     <!-- ============================================================ -->
@@ -258,6 +264,7 @@
                 <span class="tx-amount">{{ tx.amount }}</span>
                 <span class="tx-actions">
                     <a href="{{ url_for('edit_expense', id=tx.id) }}" class="tx-edit-link">Edit</a>
+                    <a href="{{ url_for('delete_expense', id=tx.id) }}" class="tx-delete-link">Delete</a>
                 </span>
             </div>
             {% endfor %}
@@ -284,6 +291,14 @@
 <script>
   (function() {
     var b = document.getElementById('js-edited-banner');
+    if (b) setTimeout(function() { b.style.display = 'none'; }, 4000);
+  })();
+</script>
+{% endif %}
+{% if request.args.get('deleted') == '1' %}
+<script>
+  (function() {
+    var b = document.getElementById('js-deleted-banner');
     if (b) setTimeout(function() { b.style.display = 'none'; }, 4000);
   })();
 </script>
