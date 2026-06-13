@@ -110,6 +110,27 @@ def create_expense(user_id, amount, category, date, description):
     return expense_id
 
 
+def get_expense_by_id(expense_id):
+    """Return the expenses row matching id, or None if not found."""
+    conn = get_db()
+    row = conn.execute(
+        "SELECT * FROM expenses WHERE id = ?", (expense_id,)
+    ).fetchone()
+    conn.close()
+    return row
+
+
+def update_expense(expense_id, amount, category, date, description):
+    """Update amount, category, date, and description for the given expense id."""
+    conn = get_db()
+    conn.execute(
+        "UPDATE expenses SET amount=?, category=?, date=?, description=? WHERE id=?",
+        (float(amount), category, date, description or None, expense_id),
+    )
+    conn.commit()
+    conn.close()
+
+
 def get_expenses_by_user(user_id):
     """Return all expenses for a user, newest first."""
     conn = get_db()
